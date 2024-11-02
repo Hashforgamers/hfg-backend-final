@@ -16,3 +16,4 @@ from .openingDay import OpeningDay
 from .physicalAddress import PhysicalAddress
 from .timing import Timing
 from .vendor import Vendor 
+from .document import Document
