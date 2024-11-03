@@ -17,3 +17,5 @@ from .physicalAddress import PhysicalAddress
 from .timing import Timing
 from .vendor import Vendor 
 from .document import Document
+from .vendorCredentials import VendorCredential
+from .vendorStatus import VendorStatus

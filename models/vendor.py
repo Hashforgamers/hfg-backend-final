@@ -26,3 +26,9 @@ class Vendor(db.Model):
     documents_submitted = relationship('DocumentSubmitted', back_populates='vendor', cascade="all, delete-orphan")
     opening_days = relationship('OpeningDay', back_populates='vendor', cascade="all, delete-orphan")
     available_games = relationship('AvailableGame', back_populates='vendor', cascade="all, delete-orphan")
+
+    # One-to-One relationship with VendorCredential
+    credential = relationship('VendorCredential', uselist=False, back_populates='vendor', cascade="all, delete")
+
+    # One-to-Many relationship with VendorStatus
+    statuses = relationship('VendorStatus', back_populates='vendor', cascade="all, delete")
