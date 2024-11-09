@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from . import db  # Import db from the models package
+from datetime import datetime
 
 # Vendor model
 class Vendor(db.Model):
@@ -16,6 +17,10 @@ class Vendor(db.Model):
     business_registration_id = Column(Integer, ForeignKey('business_registration.id'), nullable=False)
     timing_id = Column(Integer, ForeignKey('timing.id'), nullable=False)
     
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
     contact_info = relationship('ContactInfo', back_populates='vendors')
     physical_address = relationship('PhysicalAddress', back_populates='vendors')
     business_registration = relationship('BusinessRegistration', back_populates='vendors')
