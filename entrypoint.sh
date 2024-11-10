@@ -1,5 +1,5 @@
 #!/bin/bash
-# entrypoint.sh
+
 
 set -e  # Exit immediately if any command fails
 
@@ -13,49 +13,49 @@ fi
 export FLASK_APP=app.py
 
 
-# Handle commands passed as arguments
-case "$1" in
-    "refresh")
-        echo "Refreshing migrations and database..."
+# # Handle commands passed as arguments
+# case "$1" in
+#     "refresh")
+#         echo "Refreshing migrations and database..."
 
-        # Call the reset function from the reset_db script
-        python reset_db.py
+#         # Call thace reset function from the reset_db script
+#         python reset_db.py
 
-        # Reinitialize migrations
-        echo "Initializing migrations folder..."
-        flask db init
+#         # Reinitialize migrations
+#         echo "Initializing migrations folder..."
+#         flask db init
 
-        # Create and apply the initial migration
-        echo "Creating initial migration..."
-        flask db migrate -m "Initial migration"
-        echo "Running database migrations..."
-        flask db upgrade
-        ;;
+#         # Create and apply the initial migration
+#         echo "Creating initial migration..."
+#         flask db migrate -m "Initial migration"
+#         echo "Running database migrations..."
+#         flask db upgrade
+#         ;;
         
-    "reset")
-        echo "Resetting database and deleting migrations folder..."
+#     "reset")
+#         echo "Resetting database and deleting migrations folder..."
         
-        # Call the reset function from the reset_db script
-        python reset_db.py
-        ;;
+#         # Call the reset function from the reset_db script
+#         python reset_db.py
+#         ;;
 
-    *)
-        # Initialize migrations folder if it doesn't exist
-        if [ ! -d "migrations" ]; then
-            echo "Initializing migrations folder..."
-            flask db init
-        fi
+#     *)
+#         # Initialize migrations folder if it doesn't exist
+#         if [ ! -d "migrations" ]; then
+#             echo "Initializing migrations folder..."
+#             flask db init
+#         fi
 
-        # Auto-generate migrations if there are model changes
-        echo "Creating migrations if necessary..."
-        flask db migrate -m "Auto migration"
+#         # Auto-generate migrations if there are model changes
+#         echo "Creating migrations if necessary..."
+#         flask db migrate -m "Auto migration"
 
-        # Apply migrations
-        echo "Running database migrations..."
-        flask db upgrade
-        ;;
-esac
+#         # Apply migrations
+#         echo "Running database migrations..."
+#         flask db upgrade
+#         ;;
+# esac
 
-# Start the Flask application
-# echo "Starting the Flask application..."
-# exec python app.py
+# # Start the Flask application
+echo "Starting the Flask application..."
+exec python app.py

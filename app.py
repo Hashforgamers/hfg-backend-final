@@ -1,12 +1,11 @@
 import os
-from flask import Flask
+import sys
+from flask import Flask, jsonify
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 from models import db  # Import db instance from models package
 from flask_debugtoolbar import DebugToolbarExtension
-
-import sys
-import os
+import subprocess
 
 # Add the models directory to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'models'))
@@ -19,8 +18,6 @@ app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False  # Prevents redirecting
 app.config['DEBUG'] = True
 app.config['SECRET_KEY'] = 'DEV'
 
-
-
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = (
     f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@"
@@ -29,18 +26,70 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 toolbar = DebugToolbarExtension(app)
-# Initialize database and migration
-db.init_app(app)  # Initialize the db instance with the app
+
+# Initialize database and migration once
+db.init_app(app)
 migrate = Migrate(app, db)
 
-# Migration creation and upgrade
-if __name__ == '__main__':
-    # Start the Flask application
-    # app.run(host='0.0.0.0', port=5051)
+# API endpoint to initialize migrations
+@app.route('/initialize-migrations', methods=['POST'])
+def initialize_migrations():
     try:
-        print("Database Migration successfully.")
-    except Exception as e:
-        print(f"An error occurred while resetting the database: {e}")
-        sys.exit(1)  # Exit with an error status code
-    finally:
-        sys.exit(0)  # Exit with success status code
+        # Check if the migrations directory already exists
+        if os.path.exists('migrations'):
+            return jsonify({"message": "Migrations folder already exists."}), 200
+
+        # Initialize migrations folder
+        subprocess.run(["flask", "db", "init"], check=True)
+        return jsonify({"message": "Migrations have been initialized."}), 200
+    except subprocess.CalledProcessError as e:
+        return jsonify({"error": f"Failed to initialize migrations: {str(e)}"}), 500
+
+# Define the migrate-db endpoint
+@app.route('/migrate-db', methods=['POST'])
+def migrate_db():
+    try:
+        # Apply pending migrations
+        subprocess.run(["flask", "db", "migrate", "-m", "Auto migration"], check=True)
+        subprocess.run(["flask", "db", "upgrade"], check=True)
+        return jsonify({"message": "Database migration has been applied."}), 200
+    except subprocess.CalledProcessError as e:
+        return jsonify({"error": f"Failed to migrate DB: {str(e)}"}), 500
+
+# Define the reset-db endpoint
+@app.route('/reset-db', methods=['POST'])
+def reset_db():
+    try:
+        result = subprocess.run(["python", "reset_db.py"], check=True, capture_output=True, text=True)
+        return jsonify({"message": "Database has been reset.", "output": result.stdout}), 200
+    except subprocess.CalledProcessError as e:
+        return jsonify({"error": f"Failed to reset database: {str(e)}", "details": e.stderr}), 500
+
+@app.route('/refresh-db', methods=['POST'])
+def refresh_db():
+    try:
+        # Run reset_db.py to reset the database
+        subprocess.run(["python", "reset_db.py"], check=True)
+
+        # Remove the migrations directory if it exists
+        if os.path.exists('migrations'):
+            import shutil
+            shutil.rmtree('migrations')
+
+        # Reinitialize the migrations folder
+        subprocess.run(["flask", "db", "init"], check=True)
+
+        # Generate a new initial migration
+        subprocess.run(["flask", "db", "migrate", "-m", "Initial migration"], check=True)
+
+        # Apply the migration to the database
+        subprocess.run(["flask", "db", "upgrade"], check=True)
+
+        return jsonify({"message": "Database has been refreshed and migrations applied."}), 200
+
+    except subprocess.CalledProcessError as e:
+        return jsonify({"error": f"Failed to refresh database: {str(e)}", "details": e.stderr}), 500
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5051)
