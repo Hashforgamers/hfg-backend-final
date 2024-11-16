@@ -19,3 +19,4 @@ from .vendor import Vendor
 from .document import Document
 from .vendorCredentials import VendorCredential
 from .vendorStatus import VendorStatus
+from .image import Image
