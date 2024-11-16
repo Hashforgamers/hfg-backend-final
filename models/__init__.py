@@ -20,3 +20,5 @@ from .document import Document
 from .vendorCredentials import VendorCredential
 from .vendorStatus import VendorStatus
 from .image import Image
+from .booking import Booking
+from .slot import Slot
