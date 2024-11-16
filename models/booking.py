@@ -12,6 +12,8 @@ class Booking(db.Model):
     user_id = Column(Integer, nullable=False)
     game_id = Column(Integer, ForeignKey('available_games.id'), nullable=False)
     slot_id = Column(Integer, ForeignKey('slots.id'), nullable=False)
+    status = db.Column(db.String(20), default='pending_verified')  # New field for verification status
+    
 
     # Relationship with AvailableGame (many-to-one)
     game = relationship('AvailableGame', back_populates='bookings')
