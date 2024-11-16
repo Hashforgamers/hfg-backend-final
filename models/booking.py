@@ -2,8 +2,8 @@
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from . import db
-from models.available_game import AvailableGame
-from models.slot import Slot
+from . import AvailableGame
+from . import Slot
 
 class Booking(db.Model):
     __tablename__ = 'bookings'
