@@ -15,8 +15,11 @@ class AvailableGame(db.Model):
     # Relationship with Vendor (one-to-many)
     vendor = relationship('Vendor', back_populates='available_games')
     
+    # Relationship with Slot (one-to-many)
+    slots = relationship('Slot', back_populates='available_game', cascade="all, delete-orphan")
+
     # Relationship with Booking (one-to-many)
-    bookings = relationship('Booking', back_populates='game')
+    bookings = relationship('Booking', back_populates='game', cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<AvailableGame game_name={self.game_name} vendor_id={self.vendor_id}>"

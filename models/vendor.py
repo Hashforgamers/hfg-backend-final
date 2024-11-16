@@ -21,12 +21,12 @@ class Vendor(db.Model):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+    # Relationships
     contact_info = relationship('ContactInfo', back_populates='vendors')
     physical_address = relationship('PhysicalAddress', back_populates='vendors')
     business_registration = relationship('BusinessRegistration', back_populates='vendors')
     timing = relationship('Timing', back_populates='vendors')
     
-    # Relationship with other models
     amenities = relationship('Amenity', back_populates='vendor', cascade="all, delete-orphan")
     documents_submitted = relationship('DocumentSubmitted', back_populates='vendor', cascade="all, delete-orphan")
     opening_days = relationship('OpeningDay', back_populates='vendor', cascade="all, delete-orphan")

@@ -1,5 +1,5 @@
 # models/slot.py
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Date
+from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Date, Time
 from sqlalchemy.orm import relationship
 from . import db
 
@@ -7,13 +7,17 @@ class Slot(db.Model):
     __tablename__ = 'slots'
 
     id = db.Column(db.Integer, primary_key=True)
-    gaming_type = db.Column(db.String(50), nullable=False)
-    time_bracket = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.Date, nullable=False)
-    is_available = db.Column(db.Boolean, default=True)
+    gaming_type_id = Column(Integer, ForeignKey('available_games.id'), nullable=False)
+    start_time = db.Column(Time, nullable=False)
+    end_time = db.Column(Time, nullable=False)
+    available_slot = Column(Integer, nullable=False)
+    is_available = db.Column(Boolean, default=True)
+
+    # Relationship with AvailableGame (many-to-one)
+    available_game = relationship('AvailableGame', back_populates='slots')
 
     # Relationship with Booking (one-to-many)
-    bookings = relationship('Booking', back_populates='slot')
+    bookings = relationship('Booking', back_populates='slot', cascade="all, delete-orphan")
 
     def __repr__(self):
-        return f"<Slot gaming_type={self.gaming_type} time_bracket={self.time_bracket}>"
+        return f"<Slot available_game_id={self.gaming_type_id} time_bracket={self.start_time} - {self.end_time}>"
