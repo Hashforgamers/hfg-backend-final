@@ -13,6 +13,8 @@ class PhysicalAddress(db.Model):
     state = Column(String(100), nullable=False)
     country = Column(String(100), nullable=False)
     is_active = Column(Boolean, default=True)
+    latitude = Column(String(20))
+    longitude = Column(String(20))
     
     # Polymorphic fields
     parent_id = Column(Integer, nullable=False)
