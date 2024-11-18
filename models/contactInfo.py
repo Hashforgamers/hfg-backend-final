@@ -12,3 +12,4 @@ class ContactInfo(db.Model):
     phone = Column(String(50), nullable=False)
     
     vendors = relationship('Vendor', back_populates='contact_info')
+    users = relationship('User', back_populates='contact_info')

@@ -19,3 +19,4 @@ class PhysicalAddress(db.Model):
     longitude = Column(String(20), nullable=True)
 
     vendors = relationship('Vendor', back_populates='physical_address')
+    users = relationship('User', back_populates='physical_address')
