@@ -1,12 +1,10 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Date, Time
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-from flask_sqlalchemy import SQLAlchemy
-from . import db  # Import db from the models package
+from . import db
 
-# PhysicalAddress model
 class PhysicalAddress(db.Model):
     __tablename__ = 'physical_address'
-    
+
     id = Column(Integer, primary_key=True)
     address_type = Column(String(50), nullable=False)
     addressLine1 = Column(String(255), nullable=False)
@@ -15,8 +13,12 @@ class PhysicalAddress(db.Model):
     state = Column(String(100), nullable=False)
     country = Column(String(100), nullable=False)
     is_active = Column(Boolean, default=True)
-    latitude = Column(String(20), nullable=True)
-    longitude = Column(String(20), nullable=True)
+    
+    # Polymorphic fields
+    parent_id = Column(Integer, nullable=False)
+    parent_type = Column(String(50), nullable=False)
 
-    vendors = relationship('Vendor', back_populates='physical_address')
-    users = relationship('User', back_populates='physical_address')
+    __mapper_args__ = {
+        'polymorphic_identity': 'physical_address',
+        'polymorphic_on': parent_type
+    }

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey, JSON, Boolean
+from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy.orm import relationship
 from . import db
 
@@ -14,5 +14,17 @@ class User(db.Model):
     game_username = Column(String(255), unique=True, nullable=False)
 
     # Relationships
-    physical_address = relationship('PhysicalAddress', back_populates='users', uselist=False, cascade="all, delete-orphan")
-    contact_info = relationship('ContactInfo', back_populates='users', uselist=False, cascade="all, delete-orphan")
+    physical_address = relationship(
+        'PhysicalAddress',
+        primaryjoin="and_(PhysicalAddress.parent_id==User.id, "
+                    "PhysicalAddress.parent_type=='user')",
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
+    contact_info = relationship(
+        'ContactInfo',
+        primaryjoin="and_(ContactInfo.parent_id==User.id, "
+                    "ContactInfo.parent_type=='user')",
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
