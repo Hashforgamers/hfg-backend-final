@@ -1,11 +1,13 @@
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Integer, String, Date, Sequence
 from sqlalchemy.orm import relationship
 from . import db
 
+
+
 class User(db.Model):
     __tablename__ = 'users'
-
-    id = Column(Integer, primary_key=True)
+    
+    id = Column(Integer, Sequence('user_id_seq', start=2000), primary_key=True)
     fid = Column(String(255), unique=True, nullable=False)
     avatar_path = Column(String(255), nullable=True)
     name = Column(String(255), nullable=False)
@@ -24,10 +26,19 @@ class User(db.Model):
         uselist=False,
         cascade="all, delete-orphan"
     )
+
     contact_info = relationship(
-        'ContactInfo',
-        primaryjoin="and_(ContactInfo.parent_id==User.id, "
-                    "ContactInfo.parent_type=='user')",
+        "ContactInfo",
+        back_populates="user",  # Ensure this matches the relationship in ContactInfo
+        uselist=False,
+        cascade="all, delete"
+    )    
+    
+    # One-to-One relationship with PasswordManager
+    password = relationship(
+        'PasswordManager',
+        primaryjoin="and_(foreign(PasswordManager.parent_id) == User.id, PasswordManager.parent_type == 'user')",
+        back_populates='user',
         uselist=False,
         cascade="all, delete-orphan"
     )

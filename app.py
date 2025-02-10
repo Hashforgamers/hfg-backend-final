@@ -7,6 +7,7 @@ from models import db  # Import db instance from models package
 from flask_debugtoolbar import DebugToolbarExtension
 import subprocess
 
+
 # Add the models directory to the Python path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'models'))
 

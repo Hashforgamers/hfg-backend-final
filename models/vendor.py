@@ -1,13 +1,15 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Sequence
 from sqlalchemy.orm import relationship
 from . import db  # Import db from the models package
 from datetime import datetime
+
+
 
 # Vendor model
 class Vendor(db.Model):
     __tablename__ = 'vendors'
     
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, Sequence('vendor_id_seq', start=2000), primary_key=True)
     cafe_name = Column(String(255), nullable=False)
     owner_name = Column(String(255), nullable=False)
     description = Column(String(255), nullable=True)
@@ -21,15 +23,14 @@ class Vendor(db.Model):
         cascade="all, delete-orphan"
     )
     contact_info = relationship(
-        'ContactInfo',
-        primaryjoin="and_(ContactInfo.parent_id==Vendor.id, "
-                    "ContactInfo.parent_type=='vendor')",
+        "ContactInfo",
+        back_populates="vendor",  # Ensure this matches the relationship in ContactInfo
         uselist=False,
-        cascade="all, delete-orphan"
+        cascade="all, delete"
     )
 
-    business_registration_id = Column(Integer, ForeignKey('business_registration.id'), nullable=False)
-    timing_id = Column(Integer, ForeignKey('timing.id'), nullable=False)
+    business_registration_id = Column(Integer, ForeignKey('business_registration.id'), nullable=True)
+    timing_id = Column(Integer, ForeignKey('timing.id'), nullable=True)
     
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -46,8 +47,20 @@ class Vendor(db.Model):
     opening_days = relationship('OpeningDay', back_populates='vendor', cascade="all, delete-orphan")
     available_games = relationship('AvailableGame', back_populates='vendor', cascade="all, delete-orphan")
 
-    # One-to-One relationship with VendorCredential
-    credential = relationship('VendorCredential', uselist=False, back_populates='vendor', cascade="all, delete")
+    # One-to-One relationship with PasswordManager
+
+    password = relationship(
+        'PasswordManager',
+        primaryjoin="and_(foreign(PasswordManager.parent_id) == Vendor.id, PasswordManager.parent_type == 'vendor')",
+        back_populates='vendor',
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
 
     # One-to-Many relationship with VendorStatus
     statuses = relationship('VendorStatus', back_populates='vendor', cascade="all, delete")
+
+    # Add relationship to transactions
+    transactions = relationship('Transaction', back_populates='vendor', cascade="all, delete-orphan")
+
+

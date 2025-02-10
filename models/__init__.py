@@ -17,8 +17,16 @@ from .physicalAddress import PhysicalAddress
 from .timing import Timing
 from .vendor import Vendor 
 from .document import Document
-from .vendorCredentials import VendorCredential
+# from .vendorCredentials import VendorCredential
 from .vendorStatus import VendorStatus
 from .image import Image
 from .booking import Booking
 from .slot import Slot
+from .passwordManager import PasswordManager
+from .transaction import Transaction
+from .console import Console
+from .hardwareSpecification import HardwareSpecification
+from .maintainanceStatus import MaintenanceStatus 
+from .priceCostModel import PriceAndCost
+from .additionalDetails import AdditionalDetails
+

@@ -14,8 +14,8 @@ services:
     volumes:
       - .:/code
       - ./init-container/models:/models  # Adjust the path for model mounting
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     command: [""]  # Set default command as empty to allow passing commands via CLI
     networks:
       - my_network
