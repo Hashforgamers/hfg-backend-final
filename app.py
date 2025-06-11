@@ -100,6 +100,42 @@ def apply_model_changes():
     except subprocess.CalledProcessError as e:
         return jsonify({"error": f"Failed to apply model changes: {str(e)}", "details": e.stderr}), 500
 
+@app.route('/resolve-migration-desync', methods=['POST'])
+def resolve_migration_desync():
+    try:
+        import shutil
+
+        # Step 1: Remove the old migrations directory if it exists
+        if os.path.exists('migrations'):
+            shutil.rmtree('migrations')
+
+        # Step 2: Remove alembic_version table from database if it exists
+        with app.app_context():
+            from sqlalchemy import text
+            db.session.execute(text("DROP TABLE IF EXISTS alembic_version"))
+            db.session.commit()
+
+        # Step 3: Reinitialize migration directory
+        subprocess.run(["flask", "db", "init"], check=True)
+
+        # Step 4: Auto-generate new migration from models
+        subprocess.run(["flask", "db", "migrate", "-m", "Initial migration after desync fix"], check=True)
+
+        # Step 5: Apply the migration to the database
+        subprocess.run(["flask", "db", "upgrade"], check=True)
+
+        return jsonify({"message": "Migration desync resolved and database schema updated."}), 200
+
+    except subprocess.CalledProcessError as e:
+        return jsonify({
+            "error": f"Subprocess failed: {str(e)}",
+            "details": e.stderr
+        }), 500
+    except Exception as e:
+        return jsonify({
+            "error": f"Unexpected error: {str(e)}"
+        }), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5051)
