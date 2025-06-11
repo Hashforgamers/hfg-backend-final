@@ -104,8 +104,7 @@ def apply_model_changes():
 def resolve_migration_desync():
     """
     Reinitializes the Alembic migration folder and regenerates the migration scripts
-    based on the current SQLAlchemy models. It does NOT drop or interfere with
-    ad-hoc tables that are not tracked by Alembic.
+    based on the current SQLAlchemy models.
     """
     try:
         import shutil
@@ -114,18 +113,16 @@ def resolve_migration_desync():
         if os.path.exists('migrations'):
             shutil.rmtree('migrations')
 
-        # Step 2: Reinitialize the Alembic migrations folder
+        # Step 2: Reinitialize Alembic migration folder
         subprocess.run(["flask", "db", "init"], check=True)
 
-        # Step 3: Generate new migration scripts from models with better comparison options
+        # Step 3: Generate new migration scripts
         subprocess.run([
             "flask", "db", "migrate",
-            "--compare-type",
-            "--compare-server-default",
             "-m", "Initial migration after desync fix"
         ], check=True)
 
-        # Step 4: Apply the new migration to the database
+        # Step 4: Apply the migration to the database
         subprocess.run(["flask", "db", "upgrade"], check=True)
 
         return jsonify({
