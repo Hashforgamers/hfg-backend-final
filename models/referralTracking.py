@@ -6,5 +6,5 @@ from . import db
 class ReferralTracking(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     referrer_code = db.Column(db.String(10))
-    referred_user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    referred_user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
