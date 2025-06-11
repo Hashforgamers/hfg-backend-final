@@ -91,6 +91,15 @@ def refresh_db():
     except subprocess.CalledProcessError as e:
         return jsonify({"error": f"Failed to refresh database: {str(e)}", "details": e.stderr}), 500
 
+@app.route('/apply-model-changes', methods=['POST'])
+def apply_model_changes():
+    try:
+        subprocess.run(["flask", "db", "migrate", "-m", "Model changes auto-migration"], check=True)
+        subprocess.run(["flask", "db", "upgrade"], check=True)
+        return jsonify({"message": "Model changes detected and applied to database."}), 200
+    except subprocess.CalledProcessError as e:
+        return jsonify({"error": f"Failed to apply model changes: {str(e)}", "details": e.stderr}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5051)

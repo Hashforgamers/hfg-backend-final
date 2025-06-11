@@ -14,6 +14,10 @@ class User(db.Model):
     gender = Column(String(50), nullable=True)
     dob = Column(Date, nullable=True)
     game_username = Column(String(255), unique=True, nullable=False)
+
+    referral_code = Column(String(10), unique=True)
+    referred_by = Column(String(10), ForeignKey('user.referral_code'), nullable=True)
+    referral_rewards = Column(Integer, default=0)
     
     # Adding the parent_type column explicitly
     parent_type = Column(String(50), nullable=False, default='user')
