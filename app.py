@@ -102,38 +102,45 @@ def apply_model_changes():
 
 @app.route('/resolve-migration-desync', methods=['POST'])
 def resolve_migration_desync():
+    """
+    Reinitializes the Alembic migration folder and regenerates the migration scripts
+    based on the current SQLAlchemy models. It does NOT drop or interfere with
+    ad-hoc tables that are not tracked by Alembic.
+    """
     try:
         import shutil
 
-        # Step 1: Remove the old migrations directory if it exists
+        # Step 1: Remove existing migrations folder if it exists
         if os.path.exists('migrations'):
             shutil.rmtree('migrations')
 
-        # Step 2: Remove alembic_version table from database if it exists
-        with app.app_context():
-            from sqlalchemy import text
-            db.session.execute(text("DROP TABLE IF EXISTS alembic_version"))
-            db.session.commit()
-
-        # Step 3: Reinitialize migration directory
+        # Step 2: Reinitialize the Alembic migrations folder
         subprocess.run(["flask", "db", "init"], check=True)
 
-        # Step 4: Auto-generate new migration from models
-        subprocess.run(["flask", "db", "migrate", "-m", "Initial migration after desync fix"], check=True)
+        # Step 3: Generate new migration scripts from models with better comparison options
+        subprocess.run([
+            "flask", "db", "migrate",
+            "--compare-type",
+            "--compare-server-default",
+            "-m", "Initial migration after desync fix"
+        ], check=True)
 
-        # Step 5: Apply the migration to the database
+        # Step 4: Apply the new migration to the database
         subprocess.run(["flask", "db", "upgrade"], check=True)
 
-        return jsonify({"message": "Migration desync resolved and database schema updated."}), 200
+        return jsonify({
+            "message": "Migration desync resolved and database schema updated successfully."
+        }), 200
 
     except subprocess.CalledProcessError as e:
         return jsonify({
-            "error": f"Subprocess failed: {str(e)}",
-            "details": e.stderr
+            "error": "Subprocess command failed.",
+            "details": e.stderr or str(e)
         }), 500
     except Exception as e:
         return jsonify({
-            "error": f"Unexpected error: {str(e)}"
+            "error": "Unexpected server error.",
+            "details": str(e)
         }), 500
 
 
