@@ -1,9 +1,8 @@
 # models/__init__.py
 
-from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.ext.declarative import declarative_base
 
-# Initialize the SQLAlchemy instance here
-db = SQLAlchemy()
+Base = declarative_base()
 
 from .user import User  
 
