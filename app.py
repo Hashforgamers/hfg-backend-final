@@ -3,7 +3,7 @@ import sys
 from flask import Flask, jsonify
 from flask_migrate import Migrate
 from dotenv import load_dotenv
-from models import db  # Import db instance from models package
+from extension import db  # Import db instance from models package
 from flask_debugtoolbar import DebugToolbarExtension
 import subprocess
 
