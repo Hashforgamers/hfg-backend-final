@@ -103,31 +103,32 @@ def apply_model_changes():
 @app.route('/resolve-migration-desync', methods=['POST'])
 def resolve_migration_desync():
     """
-    Reinitializes the Alembic migration folder and regenerates the migration scripts
-    based on the current SQLAlchemy models.
+    Resets Alembic migration history and regenerates based on current models.
     """
     try:
         import shutil
+        import subprocess
+        from extensions import db  # Ensure this imports your db instance
 
-        # Step 1: Remove existing migrations folder if it exists
+        # Step 0: Clear Alembic version from database
+        with db.engine.connect() as connection:
+            connection.execute("DROP TABLE IF EXISTS alembic_version;")
+            connection.commit()
+
+        # Step 1: Remove migrations folder
         if os.path.exists('migrations'):
             shutil.rmtree('migrations')
 
-        # Step 2: Reinitialize Alembic migration folder
+        # Step 2: Reinitialize migrations
         subprocess.run(["flask", "db", "init"], check=True)
 
-        # Step 3: Generate new migration scripts
-        subprocess.run([
-            "flask", "db", "migrate",
-            "-m", "Initial migration after desync fix"
-        ], check=True)
+        # Step 3: Generate new migration script from current models
+        subprocess.run(["flask", "db", "migrate", "-m", "Reset after desync"], check=True)
 
-        # Step 4: Apply the migration to the database
+        # Step 4: Apply new schema to database
         subprocess.run(["flask", "db", "upgrade"], check=True)
 
-        return jsonify({
-            "message": "Migration desync resolved and database schema updated successfully."
-        }), 200
+        return jsonify({"message": "Migration desync resolved and schema updated."}), 200
 
     except subprocess.CalledProcessError as e:
         return jsonify({
