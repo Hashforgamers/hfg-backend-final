@@ -1,11 +1,7 @@
 # models/__init__.py
 
 from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
-
 from .user import User  
-
 from .amenity import Amenity  
 from .availableGame import AvailableGame
 from .businessRegistration import BusinessRegistration
@@ -30,3 +26,4 @@ from .priceCostModel import PriceAndCost
 from .additionalDetails import AdditionalDetails
 from .referralTracking import ReferralTracking
 
+Base = declarative_base()
