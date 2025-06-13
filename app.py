@@ -101,17 +101,14 @@ def apply_model_changes():
     except subprocess.CalledProcessError as e:
         return jsonify({"error": f"Failed to apply model changes: {str(e)}", "details": e.stderr}), 500
 
-
 @app.route('/resolve-migration-desync', methods=['POST'])
 def resolve_migration_desync():
     try:
-        # Step 1: Stamp the current DB state as the latest revision
-        subprocess.run(["flask", "db", "stamp", "head"], check=True)
+        result = subprocess.run(["flask", "db", "stamp", "head"], check=True, capture_output=True, text=True)
+        print("STAMP STDOUT:", result.stdout)
+        print("STAMP STDERR:", result.stderr)
 
-        # Step 2: Generate new migration script based on model changes
         subprocess.run(["flask", "db", "migrate", "-m", "Apply on-top model changes"], check=True)
-
-        # Step 3: Apply the migration to the database
         subprocess.run(["flask", "db", "upgrade"], check=True)
 
         return jsonify({"message": "Migration synced and model changes applied on top of existing schema."}), 200
@@ -126,6 +123,7 @@ def resolve_migration_desync():
             "error": "Unexpected server error.",
             "details": str(e)
         }), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5051)
