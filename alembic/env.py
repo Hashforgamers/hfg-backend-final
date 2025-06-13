@@ -18,8 +18,10 @@ target_metadata = Base.metadata
 
 # Prevent deletion of DB-only tables
 def include_object(object, name, type_, reflected, compare_to):
+    print(f"Include object? {name} type={type_} reflected={reflected} compare_to={compare_to}")
     if type_ == "table" and reflected and compare_to is None:
-        return False  # Exclude tables that are in DB but not in models (e.g., vendor_* tables)
+        print(f"Excluding table {name}")
+        return False
     return True
 
 def run_migrations_offline():
