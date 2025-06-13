@@ -105,25 +105,16 @@ def apply_model_changes():
 @app.route('/resolve-migration-desync', methods=['POST'])
 def resolve_migration_desync():
     try:
-        # Step 0: Clear Alembic version from database
-        with db.engine.connect() as connection:
-            connection.execute(text("DROP TABLE IF EXISTS alembic_version;"))
-            connection.commit()
+        # Step 1: Stamp the current DB state as the latest revision
+        subprocess.run(["flask", "db", "stamp", "head"], check=True)
 
-        # Step 1: Remove migrations folder
-        if os.path.exists('migrations'):
-            shutil.rmtree('migrations')
+        # Step 2: Generate new migration script based on model changes
+        subprocess.run(["flask", "db", "migrate", "-m", "Apply on-top model changes"], check=True)
 
-        # Step 2: Reinitialize migrations
-        subprocess.run(["flask", "db", "init"], check=True)
-
-        # Step 3: Generate new migration script from current models
-        subprocess.run(["flask", "db", "migrate", "-m", "Reset after desync"], check=True)
-
-        # Step 4: Apply new schema to database
+        # Step 3: Apply the migration to the database
         subprocess.run(["flask", "db", "upgrade"], check=True)
 
-        return jsonify({"message": "Migration desync resolved and schema updated."}), 200
+        return jsonify({"message": "Migration synced and model changes applied on top of existing schema."}), 200
 
     except subprocess.CalledProcessError as e:
         return jsonify({
