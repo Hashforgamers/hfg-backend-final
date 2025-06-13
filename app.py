@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from extension import db  # Import db instance from models package
 from flask_debugtoolbar import DebugToolbarExtension
 import subprocess
+from sqlalchemy import text
 
 
 # Add the models directory to the Python path
