@@ -95,11 +95,22 @@ def refresh_db():
 @app.route('/apply-model-changes', methods=['POST'])
 def apply_model_changes():
     try:
-        subprocess.run(["flask", "db", "migrate", "-m", "Model changes auto-migration"], check=True)
-        subprocess.run(["flask", "db", "upgrade"], check=True)
+        # Bring DB up-to-date first
+        subprocess.run(["flask", "db", "upgrade"], check=True, capture_output=True, text=True)
+
+        # Generate migration (if needed)
+        subprocess.run(["flask", "db", "migrate", "-m", "Model changes auto-migration"], check=True, capture_output=True, text=True)
+
+        # Apply new migration
+        subprocess.run(["flask", "db", "upgrade"], check=True, capture_output=True, text=True)
+
         return jsonify({"message": "Model changes detected and applied to database."}), 200
     except subprocess.CalledProcessError as e:
-        return jsonify({"error": f"Failed to apply model changes: {str(e)}", "details": e.stderr}), 500
+        return jsonify({
+            "error": f"Failed to apply model changes: {str(e)}",
+            "stderr": e.stderr,
+            "stdout": e.stdout
+        }), 500
 
 @app.route('/resolve-migration-desync', methods=['POST'])
 def resolve_migration_desync():
