@@ -106,9 +106,7 @@ def resolve_migration_desync():
     Resets Alembic migration history and regenerates based on current models.
     """
     try:
-        import shutil
-        import subprocess
-        from extensions import db  # Ensure this imports your db instance
+        import shutil  # Ensure this imports your db instance
 
         # Step 0: Clear Alembic version from database
         with db.engine.connect() as connection:
