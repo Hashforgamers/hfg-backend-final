@@ -100,17 +100,13 @@ def apply_model_changes():
     except subprocess.CalledProcessError as e:
         return jsonify({"error": f"Failed to apply model changes: {str(e)}", "details": e.stderr}), 500
 
+
 @app.route('/resolve-migration-desync', methods=['POST'])
 def resolve_migration_desync():
-    """
-    Resets Alembic migration history and regenerates based on current models.
-    """
     try:
-        import shutil  # Ensure this imports your db instance
-
         # Step 0: Clear Alembic version from database
         with db.engine.connect() as connection:
-            connection.execute("DROP TABLE IF EXISTS alembic_version;")
+            connection.execute(text("DROP TABLE IF EXISTS alembic_version;"))
             connection.commit()
 
         # Step 1: Remove migrations folder
@@ -138,7 +134,6 @@ def resolve_migration_desync():
             "error": "Unexpected server error.",
             "details": str(e)
         }), 500
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5051)
