@@ -1,7 +1,7 @@
 # models/booking.py
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
-from . import db
+from extension import db
 from .availableGame import AvailableGame
 from .slot import Slot
 

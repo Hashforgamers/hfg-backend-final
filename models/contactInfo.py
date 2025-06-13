@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from . import db
+from extension import db
 
 
 class ContactInfo(db.Model):

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Sequence
 from sqlalchemy.orm import relationship
-from . import db  # Import db from the models package
+from extension import db  # Import db from the models package
 from datetime import datetime
 
 

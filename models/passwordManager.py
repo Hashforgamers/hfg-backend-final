@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from . import db
+from extension import db
 from sqlalchemy.ext.declarative import declared_attr
 
 class PasswordManager(db.Model):

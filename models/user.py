@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, Sequence, ForeignKey
 from sqlalchemy.orm import relationship
-from . import db
+from extension import db
 
 
 

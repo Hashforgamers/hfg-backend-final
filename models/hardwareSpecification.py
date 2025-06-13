@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from . import db
+from extension import db
 
 class HardwareSpecification(db.Model):
     __tablename__ = 'hardware_specifications'
