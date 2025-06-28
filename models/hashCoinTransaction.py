@@ -4,6 +4,9 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Date, Time
 from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
 from models.user import User
+from datetime import datetime
+from sqlalchemy import DateTime
+
 
 from extension import db 
 
