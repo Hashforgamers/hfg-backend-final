@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Date, Time
 from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
 
-from extension import db # Import db from the models package
+from . import db # Import db from the models package
 
 # DocumentSubmitted model
 class DocumentSubmitted(db.Model):

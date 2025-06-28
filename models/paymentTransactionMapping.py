@@ -1,6 +1,6 @@
 # models/payment_transaction_mapping.py
 from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint
-from extension import db
+from . import db
 
 class PaymentTransactionMapping(db.Model):
     __tablename__ = 'payment_transaction_mappings'

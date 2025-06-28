@@ -1,7 +1,7 @@
 # models/available_game.py
 from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
-from extension import db
+from . import db
 
 # ✅ Define the association table before using it in the models
 available_game_console = Table(

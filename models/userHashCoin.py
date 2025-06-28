@@ -1,7 +1,7 @@
 # models/user_hash_coin.py
 from sqlalchemy import Column, Integer, ForeignKey, DateTime
 from datetime import datetime
-from extension import db
+from . import db
 
 class UserHashCoin(db.Model):
     __tablename__ = 'user_hash_coins'

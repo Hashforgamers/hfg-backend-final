@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
-from extension import db
+from . import db
 from datetime import datetime
 
 # models/vendorAccount.py
