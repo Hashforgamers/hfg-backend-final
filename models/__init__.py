@@ -31,7 +31,7 @@ from .voucherRedemptionLog import VoucherRedemptionLog
 from .hashCoinTransaction import HashCoinTransaction
 from .userHashCoin import UserHashCoin
 from .vendorAccount import VendorAccount
-from .vendorPin import vendorPin
+from .vendorPin import VendorPin
 from .hashWallet import HashWallet
 from .hashWalletTransaction import HashWalletTransaction
 
