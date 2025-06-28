@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
-from extension import db 
+from models import db 
 import os
 import sys
 
