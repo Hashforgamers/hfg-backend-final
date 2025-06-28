@@ -1,3 +1,4 @@
+#alembic/env.py
 from __future__ import with_statement
 import sys
 import os
@@ -7,14 +8,15 @@ from alembic import context
 
 # Import your models here
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from app.models import Base  # Make sure Base is your declarative_base()
+from extension import db
+
 
 # Alembic Config object
 config = context.config
 fileConfig(config.config_file_name)
 
 # Metadata for autogenerate support
-target_metadata = Base.metadata
+target_metadata = db.metadata
 
 # Prevent deletion of DB-only tables
 def include_object(object, name, type_, reflected, compare_to):
