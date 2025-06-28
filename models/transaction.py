@@ -15,6 +15,8 @@ class Transaction(db.Model):
     booking_time = Column(Time, default=datetime.utcnow().time(), nullable=False)
     user_name = Column(String(255), nullable=False)
     amount = Column(Float, nullable=False)
+    original_amount = Column(Float, nullable=False)
+    discounted_amount = Column(Float, nullable=False, default=0)
     mode_of_payment = Column(String(50), default='online', nullable=False)
     booking_type = Column(String(255), default='hash', nullable=False)
     settlement_status = Column(String(50), default='pending', nullable=False)
