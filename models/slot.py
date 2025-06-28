@@ -1,7 +1,7 @@
 # models/slot.py
 from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Date, Time
 from sqlalchemy.orm import relationship
-from extension import db
+from . import db
 
 class Slot(db.Model):
     __tablename__ = 'slots'

@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
-from extension import db
+from . import db
 
 class VendorPin(db.Model):
     __tablename__ = 'vendor_pins'

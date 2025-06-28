@@ -1,6 +1,6 @@
 # models/hash_wallet.py
 from sqlalchemy import Column, Integer, ForeignKey
-from extension import db 
+from . import db 
 
 class HashWallet(db.Model):
     __tablename__ = 'hash_wallets'

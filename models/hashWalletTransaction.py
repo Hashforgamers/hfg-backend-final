@@ -1,7 +1,7 @@
 # models/hash_wallet_transaction.py
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from datetime import datetime
-from extension import db 
+from . import db 
 
 class HashWalletTransaction(db.Model):
     __tablename__ = 'hash_wallet_transactions'

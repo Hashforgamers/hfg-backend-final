@@ -8,7 +8,7 @@ from datetime import datetime
 from sqlalchemy import DateTime
 
 
-from extension import db 
+from . import db 
 
 class HashCoinTransaction(db.Model):
     __tablename__ = 'hash_coin_transactions'

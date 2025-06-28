@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
-from extension import db
+from . import db
 from models.availableGame import available_game_console 
 
 class Console(db.Model):

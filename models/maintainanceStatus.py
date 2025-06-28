@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey
 from sqlalchemy.orm import relationship
-from extension import db
+from . import db
 
 class MaintenanceStatus(db.Model):
     __tablename__ = 'maintenance_status'

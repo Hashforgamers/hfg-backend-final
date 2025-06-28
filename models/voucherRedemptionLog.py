@@ -1,7 +1,7 @@
 # models/voucher_redemption_log.py
 from sqlalchemy import Column, Integer, ForeignKey, DateTime
 from datetime import datetime
-from extension import db
+from . import db
 
 class VoucherRedemptionLog(db.Model):
     __tablename__ = 'voucher_redemption_logs'

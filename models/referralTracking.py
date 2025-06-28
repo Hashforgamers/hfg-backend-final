@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from extension import db
+from . import db
 
 class ReferralTracking(db.Model):
     id = db.Column(db.Integer, primary_key=True)

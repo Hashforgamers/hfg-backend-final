@@ -1,7 +1,7 @@
 from datetime import datetime  # Add this line
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
-from extension import db
+from . import db
 
 class VendorStatus(db.Model):
     __tablename__ = 'vendor_statuses'
