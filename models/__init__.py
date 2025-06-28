@@ -34,6 +34,4 @@ from .vendorAccount import VendorAccount
 from .vendorPin import VendorPin
 from .hashWallet import HashWallet
 from .hashWalletTransaction import HashWalletTransaction
-from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()

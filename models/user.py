@@ -1,8 +1,7 @@
+#models/user.py
 from sqlalchemy import Column, Integer, String, Date, Sequence, ForeignKey
 from sqlalchemy.orm import relationship
 from extension import db
-
-
 
 class User(db.Model):
     __tablename__ = 'users'
