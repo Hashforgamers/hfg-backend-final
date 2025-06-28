@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from . import db
+from extension import db
 
 class PriceAndCost(db.Model):
     __tablename__ = 'price_and_cost'

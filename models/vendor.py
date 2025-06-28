@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Sequence
 from sqlalchemy.orm import relationship
-from . import db  # Import db from the models package
+from extension import db  # Import db from the models package
 from datetime import datetime
 
 
@@ -46,6 +46,12 @@ class Vendor(db.Model):
     documents_submitted = relationship('DocumentSubmitted', back_populates='vendor', cascade="all, delete-orphan")
     opening_days = relationship('OpeningDay', back_populates='vendor', cascade="all, delete-orphan")
     available_games = relationship('AvailableGame', back_populates='vendor', cascade="all, delete-orphan")
+
+    # In Vendor model
+    account_id = Column(Integer, ForeignKey('vendor_accounts.id'), nullable=True)
+    account = relationship('VendorAccount', back_populates='vendors')
+
+    pin = relationship('VendorPin', back_populates='vendor', uselist=False, cascade="all, delete-orphan")
 
     # One-to-One relationship with PasswordManager
 

@@ -1,12 +1,7 @@
 # models/__init__.py
 
-from flask_sqlalchemy import SQLAlchemy
-
-# Initialize the SQLAlchemy instance here
-db = SQLAlchemy()
-
+from sqlalchemy.ext.declarative import declarative_base
 from .user import User  
-
 from .amenity import Amenity  
 from .availableGame import AvailableGame
 from .businessRegistration import BusinessRegistration
@@ -29,4 +24,15 @@ from .hardwareSpecification import HardwareSpecification
 from .maintainanceStatus import MaintenanceStatus 
 from .priceCostModel import PriceAndCost
 from .additionalDetails import AdditionalDetails
+from .referralTracking import ReferralTracking
+from .paymentTransactionMapping import PaymentTransactionMapping
+from .voucher import Voucher
+from .voucherRedemptionLog import VoucherRedemptionLog
+from .hashCoinTransaction import HashCoinTransaction
+from .userHashCoin import UserHashCoin
+from .vendorAccount import VendorAccount
+from .vendorPin import vendorPin
+from .hashWallet import HashWallet
+from .hashWalletTransaction import HashWalletTransaction
 
+Base = declarative_base()

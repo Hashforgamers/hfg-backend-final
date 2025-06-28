@@ -3,9 +3,10 @@ import sys
 from flask import Flask, jsonify
 from flask_migrate import Migrate
 from dotenv import load_dotenv
-from models import db  # Import db instance from models package
+from extension import db  # Import db instance from models package
 from flask_debugtoolbar import DebugToolbarExtension
 import subprocess
+from sqlalchemy import text
 
 
 # Add the models directory to the Python path
@@ -90,6 +91,49 @@ def refresh_db():
 
     except subprocess.CalledProcessError as e:
         return jsonify({"error": f"Failed to refresh database: {str(e)}", "details": e.stderr}), 500
+
+@app.route('/apply-model-changes', methods=['POST'])
+def apply_model_changes():
+    try:
+        # Bring DB up-to-date first
+        subprocess.run(["flask", "db", "upgrade"], check=True, capture_output=True, text=True)
+
+        # Generate migration (if needed)
+        subprocess.run(["flask", "db", "migrate", "-m", "Model changes auto-migration"], check=True, capture_output=True, text=True)
+
+        # Apply new migration
+        subprocess.run(["flask", "db", "upgrade"], check=True, capture_output=True, text=True)
+
+        return jsonify({"message": "Model changes detected and applied to database."}), 200
+    except subprocess.CalledProcessError as e:
+        return jsonify({
+            "error": f"Failed to apply model changes: {str(e)}",
+            "stderr": e.stderr,
+            "stdout": e.stdout
+        }), 500
+
+@app.route('/resolve-migration-desync', methods=['POST'])
+def resolve_migration_desync():
+    try:
+        result = subprocess.run(["flask", "db", "stamp", "head"], check=True, capture_output=True, text=True)
+        print("STAMP STDOUT:", result.stdout)
+        print("STAMP STDERR:", result.stderr)
+
+        subprocess.run(["flask", "db", "migrate", "-m", "Apply on-top model changes"], check=True)
+        subprocess.run(["flask", "db", "upgrade"], check=True)
+
+        return jsonify({"message": "Migration synced and model changes applied on top of existing schema."}), 200
+
+    except subprocess.CalledProcessError as e:
+        return jsonify({
+            "error": "Subprocess command failed.",
+            "details": e.stderr or str(e)
+        }), 500
+    except Exception as e:
+        return jsonify({
+            "error": "Unexpected server error.",
+            "details": str(e)
+        }), 500
 
 
 if __name__ == '__main__':
