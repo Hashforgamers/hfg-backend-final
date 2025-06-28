@@ -25,5 +25,14 @@ from .maintainanceStatus import MaintenanceStatus
 from .priceCostModel import PriceAndCost
 from .additionalDetails import AdditionalDetails
 from .referralTracking import ReferralTracking
+from .paymentTransactionMapping import PaymentTransactionMapping
+from .voucher import Voucher
+from .voucherRedemptionLog import VoucherRedemptionLog
+from .hashCoinTransaction import HashCoinTransaction
+from .userHashCoin import UserHashCoin
+from .vendorAccount import VendorAccount
+from .vendorPin import vendorPin
+from .hashWallet import HashWallet
+from .hashWalletTransaction import HashWalletTransaction
 
 Base = declarative_base()

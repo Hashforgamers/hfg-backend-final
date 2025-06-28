@@ -47,6 +47,12 @@ class Vendor(db.Model):
     opening_days = relationship('OpeningDay', back_populates='vendor', cascade="all, delete-orphan")
     available_games = relationship('AvailableGame', back_populates='vendor', cascade="all, delete-orphan")
 
+    # In Vendor model
+    account_id = Column(Integer, ForeignKey('vendor_accounts.id'), nullable=True)
+    account = relationship('VendorAccount', back_populates='vendors')
+
+    pin = relationship('VendorPin', back_populates='vendor', uselist=False, cascade="all, delete-orphan")
+
     # One-to-One relationship with PasswordManager
 
     password = relationship(
