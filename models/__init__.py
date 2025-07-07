@@ -38,4 +38,6 @@ from .vendorAccount import VendorAccount
 from .vendorPin import VendorPin
 from .hashWallet import HashWallet
 from .hashWalletTransaction import HashWalletTransaction
+from .accessBookingCode import AccessBookingCode
+from .bookingQueue import BookingQueue
 
