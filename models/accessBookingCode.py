@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from . import db
+from datetime import datetime
 
 class AccessBookingCode(db.Model):
     __tablename__ = 'access_booking_codes'
