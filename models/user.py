@@ -17,7 +17,10 @@ class User(db.Model):
     referral_code = Column(String(10), unique=True)
     referred_by = Column(String(10), ForeignKey('users.referral_code'), nullable=True)
     referral_rewards = Column(Integer, default=0)
-    
+
+    # Newly Added relation
+    fcm_tokens = relationship('FCMToken', back_populates='user', cascade="all, delete-orphan")
+
     # Adding the parent_type column explicitly
     parent_type = Column(String(50), nullable=False, default='user')
 

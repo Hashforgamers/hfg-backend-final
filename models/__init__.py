@@ -40,4 +40,5 @@ from .hashWallet import HashWallet
 from .hashWalletTransaction import HashWalletTransaction
 from .accessBookingCode import AccessBookingCode
 from .bookingQueue import BookingQueue
+from .fcmToken import FCMToken
 
