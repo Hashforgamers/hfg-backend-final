@@ -63,6 +63,15 @@ class Vendor(db.Model):
         cascade="all, delete-orphan"
     )
 
+    # Add in Vendor model
+    supported_games = relationship(
+        'SupportedGame',
+        back_populates='vendor',
+        cascade="all, delete-orphan"
+    )
+
+    extra_service_categories = relationship('ExtraServiceCategory', back_populates='vendor', cascade='all, delete-orphan')
+
     # One-to-Many relationship with VendorStatus
     statuses = relationship('VendorStatus', back_populates='vendor', cascade="all, delete")
 
