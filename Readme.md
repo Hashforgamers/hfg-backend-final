@@ -1,25 +1,50 @@
-# Backend Final Service - Models Documentation
+# HFG Backend Final Documentation
 
-This documentation covers all database models used by the service with links to detailed documentation.
+## 📚 Model Documentation Status
 
-## Model Documentation Index
+### 🔗 Complete List of Documented Models
 
-1. **[Booking Model](./models_docs/Booking.md)** - Tracks user bookings for game sessions
-2. **[AvailableGame Model](./models_docs/AvailableGame.md)** - Games available for booking
-3. **[Slot Model](./models_docs/Slot.md)** - Time slots available for booking
-4. **[User Model](./models_docs/User.md)** - User accounts and profiles  
-5. **[Transaction Model](./models_docs/Transaction.md)** - Payment transactions
-6. **[AccessBookingCode Model](./models_docs/AccessBookingCode.md)** - Booking access codes
-7. **[BookingExtraService Model](./models_docs/BookingExtraService.md)** - Extra booking services
-8. **[Voucher Model](./models_docs/Voucher.md)** - Discount vouchers
-9. **[HashWallet Model](./models_docs/HashWallet.md)** - User cryptocurrency wallets
+#### User Management
+1. [User](models_docs/User.md) - Core user profiles
+2. [UserHashCoin](models_docs/UserHashCoin.md) - Crypto balances
+3. [Voucher](models_docs/Voucher.md) - Discount codes
+4. [VoucherRedemptionLog](models_docs/VoucherRedemptionLog.md) - Voucher usage
 
-## Database Schema Overview
+#### Vendor Management
+5. [Vendor](models_docs/Vendor.md) - Service providers
+6. [VendorAccount](models_docs/VendorAccount.md) - Auth credentials  
+7. [VendorPin](models_docs/VendorPin.md) - PIN security
+8. [BusinessRegistration](models_docs/BusinessRegistration.md) - Vendor registration
 
-![Database Schema Diagram]
+#### Booking System  
+9. [Booking](models_docs/Booking.md) - Game sessions  
+10. [AvailableGame](models_docs/AvailableGame.md) - Game catalog
+11. [AccessBookingCode](models_docs/AccessBookingCode.md) - Verification codes
+12. [BookingExtraService](models_docs/BookingExtraService.md) - Additional services
 
-## Creating Documentation
-To update model documentation:
-1. Edit the corresponding markdown file in `models_docs/`
-2. Add new model documentation files as needed
-3. Update the index links above
+#### Game System
+13. [Game](models_docs/Game.md) - Game details
+14. [Console](models_docs/Console.md) - Hardware platforms
+15. [HardwareSpecification](models_docs/HardwareSpecification.md) - Tech specs
+
+#### Financials
+16. [HashWallet](models_docs/HashWallet.md) - Digital wallets
+17. [HashCoinTransaction](models_docs/HashCoinTransaction.md) - Transactions  
+18. [PriceAndCost](models_docs/PriceAndCost.md) - Pricing models
+19. [ReferralTracking](models_docs/ReferralTracking.md) - Referral program
+
+#### Supporting Models
+20. [PhysicalAddress](models_docs/PhysicalAddress.md) - Location data
+21. [ContactInfo](models_docs/ContactInfo.md) - Contact details  
+22. [Document](models_docs/Document.md) - Documentation
+23. [DocumentSubmitted](models_docs/DocumentSubmitted.md) - Submitted docs
+24. [FcmToken](models_docs/FcmToken.md) - Push notifications
+25. [Amenity](models_docs/Amenity.md) - Facility features
+26. [AdditionalDetails](models_docs/AdditionalDetails.md) - Extra info
+27. [ExtraServiceCategory](models_docs/ExtraServiceCategory.md) - Service types
+28. [ExtraServiceMenu](models_docs/ExtraServiceMenu.md) - Service options
+29. [Console](models_docs/Console.md) - Gaming consoles
+
+## Note:
+- userPass.py model file was not found
+- All documentation includes fields, relationships and examples
